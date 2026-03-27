@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>寝落ちドライブ - Languid Drive</title>
+    <meta name="description" content="眠気を誘う、心地よい低速ドライブ体験。深夜の静かな道をただ進む。">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Noto+Sans+JP:wght@300;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- UI Overlay -->
+        <div id="ui-overlay">
+            <div class="top-bar">
+                <div class="timer-container">
+                    <span class="label">TIME LEFT</span>
+                    <span id="main-timer">35.0</span>
+                </div>
+                <div class="counter-container">
+                    <span class="label">POINTS</span>
+                    <span id="cp-counter">0</span>
+                </div>
+                <div class="total-time-container">
+                    <span class="label">ELAPSED</span>
+                    <span id="total-time">00:00</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="fade-overlay"></div>
+
+        <div id="game-over-screen" class="hidden">
+            <h1>Fading to Silence...</h1>
+            <p>Good Night.</p>
+            <p id="sleep-time-display" style="font-size: 1.25em; color: #00ffea; font-weight: 500; margin-bottom: 24px; text-shadow: 0 0 10px rgba(0, 255, 234, 0.5);"></p>
+            <button id="restart-btn">Drive Again</button>
+        </div>
+    </div>
+
+    <script src="game.js" defer></script>
+</body>
+
+</html>
