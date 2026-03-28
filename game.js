@@ -199,13 +199,13 @@ function triggerGameOver() {
         } else {
             // Completely stopped
             fadeOverlay.style.opacity = 1;
-            
-            // Start sleep timer
-            state.sleepStartTime = Date.now();
 
+            // Wait until screen becomes fully dark (matches 5s CSS transition)
             setTimeout(() => {
+                // Start sleep timer
+                state.sleepStartTime = Date.now();
                 gameOverScreen.classList.remove('hidden');
-            }, 2000);
+            }, 5000);
         }
     };
     decelerate();
