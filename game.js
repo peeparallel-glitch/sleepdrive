@@ -28,7 +28,8 @@ let state = {
     lastCheckpointSpawn: 0,
     frame: 0,
     checkpointsCollected: 0,
-    sleepStartTime: null
+    sleepStartTime: null,
+    lastFrameTime: Date.now()
 };
 
 // Assets
@@ -87,10 +88,15 @@ restartBtn.addEventListener('click', () => {
 function update() {
     if (!state.isGameOver) {
         const now = Date.now();
+        
+        // True realtime delta
+        const dt = (now - state.lastFrameTime) / 1000;
+        state.lastFrameTime = now;
+        
         state.elapsedTime = now - state.startTime;
 
-        // Timer countdown
-        state.timer -= 1 / 60; // Approx 60fps
+        // True realtime timer countdown
+        state.timer -= dt;
         if (state.timer <= 0) {
             state.timer = 0;
             triggerGameOver();
