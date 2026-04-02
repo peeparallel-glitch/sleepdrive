@@ -177,9 +177,18 @@ function update() {
 }
 
 function spawnCheckpoint() {
-    const width = canvas.clientWidth / (window.devicePixelRatio || 1);
+    // 描画座標・判定座標に合わせて、確実に道の範囲内にスポーンさせる
+    const canvasW = canvas.width / (window.devicePixelRatio || 1);
+    const roadW = canvasW * 0.8;
+    const roadStartX = (canvasW - roadW) / 2;
+    const cpWidth = 54; // 車(36)の1.5倍
+    
+    // スポーン可能なX領域 (道の中かつ壁から少し離す)
+    const minX = roadStartX + cpWidth / 2;
+    const maxX = roadStartX + roadW - cpWidth / 2;
+
     state.checkpoints.push({
-        x: Math.random() * (width - 100) + 50,
+        x: Math.random() * (maxX - minX) + minX,
         y: -50
     });
 }
@@ -202,6 +211,12 @@ function triggerGameOver() {
 
             // Wait until screen becomes fully dark (matches 5s CSS transition)
             setTimeout(() => {
+                // Set play time
+                const finalPlaySec = Math.floor(state.elapsedTime / 1000);
+                const pm = Math.floor(finalPlaySec / 60).toString().padStart(2, '0');
+                const ps = (finalPlaySec % 60).toString().padStart(2, '0');
+                document.getElementById('play-time-display').innerText = `生存プレイ時間: ${pm}分${ps}秒`;
+
                 // Start sleep timer
                 state.sleepStartTime = Date.now();
                 gameOverScreen.classList.remove('hidden');
