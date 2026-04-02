@@ -27,6 +27,7 @@ let state = {
     checkpoints: [],
     lastCheckpointSpawn: 0,
     frame: 0,
+    distanceTravelled: 0,
     checkpointsCollected: 0,
     sleepStartTime: null,
     lastFrameTime: Date.now()
@@ -137,7 +138,7 @@ function update() {
             const carW = 36;
             const carH = 64;
             const h = canvas.height / (window.devicePixelRatio || 1);
-            const playerY = h - 100;
+            const playerY = h - 150; // 少し上に上げる
             const carLeft = state.playerX - carW / 2;
             const carRight = state.playerX + carW / 2;
             const carTop = playerY - carH / 2;
@@ -171,6 +172,7 @@ function update() {
         document.getElementById('sleep-time-display').innerText = `寝落ち睡眠時間: ${timeStr}`;
     }
 
+    state.distanceTravelled += state.scrollSpeed;
     state.frame++;
     render();
     requestAnimationFrame(update);
@@ -215,7 +217,7 @@ function triggerGameOver() {
                 const finalPlaySec = Math.floor(state.elapsedTime / 1000);
                 const pm = Math.floor(finalPlaySec / 60).toString().padStart(2, '0');
                 const ps = (finalPlaySec % 60).toString().padStart(2, '0');
-                document.getElementById('play-time-display').innerText = `生存プレイ時間: ${pm}分${ps}秒`;
+                document.getElementById('play-time-display').innerText = `寝落ちまでの時間: ${pm}分${ps}秒`;
 
                 // Start sleep timer
                 state.sleepStartTime = Date.now();
@@ -284,7 +286,7 @@ function render() {
     });
 
     // Draw Player
-    const playerY = h - 100;
+    const playerY = h - 150; // 少し上に移動
     ctx.save();
 
     // Procedural Sleek Car Block
@@ -371,13 +373,13 @@ function drawRoad(w, h) {
     // Side markers (moving)
     ctx.strokeStyle = 'rgba(0, 255, 234, 0.1)';
     ctx.setLineDash([20, 100]);
-    ctx.lineDashOffset = - (state.frame * state.scrollSpeed) % 120;
+    ctx.lineDashOffset = - (state.distanceTravelled) % 120;
     ctx.stroke();
 
     // Center dashed lines
     ctx.strokeStyle = 'rgba(148, 163, 184, 0.15)';
     ctx.setLineDash([40, 60]);
-    ctx.lineDashOffset = - (state.frame * state.scrollSpeed * 1.5) % 100;
+    ctx.lineDashOffset = - (state.distanceTravelled * 1.5) % 100;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(w / 2, 0);
@@ -388,7 +390,7 @@ function drawRoad(w, h) {
 
     // Draw Streetlights
     const spacing = 350; // Distance between lights
-    const yOffset = (state.frame * state.scrollSpeed) % spacing;
+    const yOffset = state.distanceTravelled % spacing;
     
     ctx.save();
     ctx.shadowBlur = 25;
