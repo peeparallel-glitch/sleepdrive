@@ -10,6 +10,10 @@ const cpCounterEl = document.getElementById('cp-counter');
 const gameOverScreen = document.getElementById('game-over-screen');
 const fadeOverlay = document.getElementById('fade-overlay');
 const restartBtn = document.getElementById('restart-btn');
+const startBtn = document.getElementById('start-btn');
+const titleScreen = document.getElementById('title-screen');
+const uiOverlay = document.getElementById('ui-overlay');
+const totalPointsDisplay = document.getElementById('total-points-display');
 
 // Constants & State
 const BASE_SPEED = 2;
@@ -22,6 +26,7 @@ let state = {
     elapsedTime: 0,
     scrollSpeed: BASE_SPEED,
     isGameOver: false,
+    isTitleScreen: true,
     playerX: 0,
     playerTargetX: 0,
     checkpoints: [],
@@ -30,8 +35,12 @@ let state = {
     distanceTravelled: 0,
     checkpointsCollected: 0,
     sleepStartTime: null,
-    lastFrameTime: Date.now()
+    lastFrameTime: Date.now(),
+    totalPoints: parseInt(localStorage.getItem('languid_total_points') || '0', 10)
 };
+
+// Update title screen total points initially
+totalPointsDisplay.innerText = state.totalPoints;
 
 // Assets
 const carImg = new Image();
@@ -80,13 +89,30 @@ window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === 'd') state.playerTargetX += moveSpeed;
 });
 
-// Restart functionality
+// Start / Restart functionality
+startBtn.addEventListener('click', () => {
+    state.isTitleScreen = false;
+    state.startTime = Date.now();
+    state.lastFrameTime = Date.now();
+    titleScreen.classList.add('hidden');
+    uiOverlay.classList.remove('hidden');
+});
+
 restartBtn.addEventListener('click', () => {
     location.reload();
 });
 
 // Game Loop
 function update() {
+    if (state.isTitleScreen) {
+        // Only run background animation
+        state.distanceTravelled += state.scrollSpeed;
+        state.frame++;
+        render();
+        requestAnimationFrame(update);
+        return;
+    }
+
     if (!state.isGameOver) {
         const now = Date.now();
         
@@ -154,6 +180,8 @@ function update() {
             if (carRight > cpLeft && carLeft < cpRight && carBottom > cpTop && carTop < cpBottom) {
                 state.timer += 15;
                 state.checkpointsCollected++;
+                state.totalPoints++;
+                localStorage.setItem('languid_total_points', state.totalPoints);
                 state.checkpoints.splice(i, 1);
             } else if (cp.y > canvas.height) {
                 state.checkpoints.splice(i, 1);

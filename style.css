@@ -108,6 +108,7 @@ body {
     color: #fbbf24;
 }
 
+#title-screen,
 #game-over-screen {
     position: absolute;
     z-index: 30;
@@ -126,6 +127,7 @@ body {
     pointer-events: auto;
 }
 
+#title-screen h1,
 #game-over-screen h1 {
     font-size: 24px;
     font-weight: 300;
@@ -133,11 +135,13 @@ body {
     letter-spacing: -0.02em;
 }
 
+#title-screen p,
 #game-over-screen p {
     color: var(--text-secondary);
     margin-bottom: 24px;
 }
 
+#start-btn,
 #restart-btn {
     background: var(--text-primary);
     color: #000;
@@ -149,6 +153,7 @@ body {
     transition: transform 0.2s;
 }
 
+#start-btn:active,
 #restart-btn:active {
     transform: scale(0.95);
 }

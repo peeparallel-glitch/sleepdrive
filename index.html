@@ -19,7 +19,7 @@
         <canvas id="game-canvas"></canvas>
 
         <!-- UI Overlay -->
-        <div id="ui-overlay">
+        <div id="ui-overlay" class="hidden">
             <div class="top-bar">
                 <div class="timer-container">
                     <span class="label">TIME LEFT</span>
@@ -45,6 +45,16 @@
             <p id="play-time-display" style="font-size: 1em; color: #e0e6ed; font-weight: 400; margin-bottom: 8px;"></p>
             <p id="sleep-time-display" style="font-size: 1.25em; color: #00ffea; font-weight: 500; margin-bottom: 24px; text-shadow: 0 0 10px rgba(0, 255, 234, 0.5);"></p>
             <button id="restart-btn">Drive Again</button>
+        </div>
+
+        <div id="title-screen">
+            <h1>Languid Drive</h1>
+            <p>深夜の静寂へようこそ</p>
+            <div style="margin-bottom: 24px; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <span style="font-size: 12px; color: #94a3b8; letter-spacing: 0.1em; display: block; margin-bottom: 4px;">TOTAL POINTS</span>
+                <span id="total-points-display" style="font-size: 32px; color: #fbbf24; font-weight: 600; display: block; text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);">0</span>
+            </div>
+            <button id="start-btn">Drive Starts</button>
         </div>
     </div>
 
