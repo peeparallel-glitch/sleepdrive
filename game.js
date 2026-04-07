@@ -66,13 +66,13 @@ resize();
 
 // Input Handling
 window.addEventListener('mousemove', (e) => {
-    if (state.isGameOver) return;
+    if (state.isGameOver || state.isTitleScreen) return;
     const rect = canvas.getBoundingClientRect();
     state.playerTargetX = e.clientX - rect.left;
 });
 
 function handleTouch(e) {
-    if (state.isGameOver) return;
+    if (state.isGameOver || state.isTitleScreen) return;
     // Prevent default scrolling/swipe-back on mobile
     if (e.cancelable) e.preventDefault();
     const rect = canvas.getBoundingClientRect();
