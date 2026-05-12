@@ -14,6 +14,7 @@ const startBtn = document.getElementById('start-btn');
 const titleScreen = document.getElementById('title-screen');
 const uiOverlay = document.getElementById('ui-overlay');
 const totalPointsDisplay = document.getElementById('total-points-display');
+const bgmVolumeSlider = document.getElementById('bgm-volume-slider');
 
 // Constants & State
 const BASE_SPEED = 2;
@@ -21,7 +22,7 @@ const DECELERATION_TIME = 5000; // 5 seconds
 const CHECKPOINT_INTERVAL = 15000; // 15 seconds
 
 let state = {
-    timer: 35.0,
+    timer: 60.0,
     startTime: Date.now(),
     elapsedTime: 0,
     scrollSpeed: BASE_SPEED,
@@ -48,6 +49,29 @@ carImg.src = 'assets/car.png';
 
 const checkpointImg = new Image();
 checkpointImg.src = 'assets/checkpoint.png';
+
+const cpSound = new Audio('assets/BGM/Bell(High).mp3');
+cpSound.volume = 0.6;
+
+const mainBgm = new Audio('assets/BGM/Midnight piano.mp3');
+mainBgm.loop = true;
+mainBgm.volume = 0.6;
+
+let bgmStarted = false;
+function startMainBgm() {
+    if (!bgmStarted) {
+        mainBgm.play().then(() => {
+            bgmStarted = true;
+        }).catch(e => console.log("BGM autoplay blocked:", e));
+    }
+}
+
+window.addEventListener('click', startMainBgm, { once: true });
+window.addEventListener('touchstart', startMainBgm, { once: true, passive: true });
+
+bgmVolumeSlider.addEventListener('input', (e) => {
+    mainBgm.volume = e.target.value;
+});
 
 // Setup Canvas size
 function resize() {
@@ -91,6 +115,7 @@ window.addEventListener('keydown', (e) => {
 
 // Start / Restart functionality
 startBtn.addEventListener('click', () => {
+    startMainBgm(); // Ensure BGM starts if this is the first interaction
     state.isTitleScreen = false;
     state.startTime = Date.now();
     state.lastFrameTime = Date.now();
@@ -178,6 +203,10 @@ function update() {
             const cpBottom = cp.y + cpHeight / 2;
 
             if (carRight > cpLeft && carLeft < cpRight && carBottom > cpTop && carTop < cpBottom) {
+                // Play sound
+                cpSound.currentTime = 0;
+                cpSound.play().catch(e => console.log("Audio play failed:", e));
+                
                 state.timer += 15;
                 state.checkpointsCollected++;
                 state.totalPoints++;
