@@ -43,7 +43,7 @@ const sleepHistoryList = document.getElementById('sleep-history-list');
 // Translations
 const i18n = {
     ja: {
-        UI_01: "出発",
+        UI_01: "タイトルへ戻る",
         UI_02: "設定",
         UI_03: "睡眠記録",
         UI_04: "車種選択",
@@ -93,7 +93,7 @@ const i18n = {
         C_VIOLET: "バイオレット"
     },
     en: {
-        UI_01: "Depart",
+        UI_01: "Return to Title",
         UI_02: "Settings",
         UI_03: "Sleep Logs",
         UI_04: "Choose Vehicle",
@@ -143,7 +143,7 @@ const i18n = {
         C_VIOLET: "Violet"
     },
     zh: {
-        UI_01: "启程",
+        UI_01: "返回标题",
         UI_02: "设置",
         UI_03: "睡眠记录",
         UI_04: "车辆选择",
@@ -193,7 +193,7 @@ const i18n = {
         C_VIOLET: "紫罗兰色"
     },
     ko: {
-        UI_01: "출발",
+        UI_01: "타이틀로 돌아가기",
         UI_02: "설정",
         UI_03: "수면 기록",
         UI_04: "차량 선택",
@@ -243,7 +243,7 @@ const i18n = {
         C_VIOLET: "바이올렛"
     },
     es: {
-        UI_01: "Partir",
+        UI_01: "Volver al Título",
         UI_02: "Ajustes",
         UI_03: "Registro de sueño",
         UI_04: "Elegir vehículo",
@@ -293,7 +293,7 @@ const i18n = {
         C_VIOLET: "Violeta"
     },
     fr: {
-        UI_01: "Départ",
+        UI_01: "Retour au Titre",
         UI_02: "Paramètres",
         UI_03: "Journal de sommeil",
         UI_04: "Choix du véhicule",
