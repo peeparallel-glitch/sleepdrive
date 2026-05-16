@@ -15,6 +15,216 @@ const titleScreen = document.getElementById('title-screen');
 const uiOverlay = document.getElementById('ui-overlay');
 const totalPointsDisplay = document.getElementById('total-points-display');
 const bgmVolumeSlider = document.getElementById('bgm-volume-slider');
+const settingsOpenBtn = document.getElementById('settings-open-btn');
+const settingsCloseBtn = document.getElementById('settings-close-btn');
+const settingsModal = document.getElementById('settings-modal');
+const bgmSelect = document.getElementById('bgm-select');
+const shopItemsContainer = document.getElementById('shop-items');
+const langSelect = document.getElementById('lang-select');
+const shopOpenBtn = document.getElementById('shop-open-btn');
+const shopCloseBtn = document.getElementById('shop-close-btn');
+const shopModal = document.getElementById('shop-modal');
+const langOpenBtn = document.getElementById('lang-open-btn');
+const langCloseBtn = document.getElementById('lang-close-btn');
+const langModal = document.getElementById('lang-modal');
+
+// Translations
+const i18n = {
+    ja: {
+        UI_01: "出発",
+        UI_02: "設定 & ショップ",
+        UI_03: "睡眠記録",
+        UI_04: "車種選択",
+        UI_05: "走行中...",
+        UI_06: "残り時間",
+        UI_07: "+15秒",
+        UI_08: "おやすみなさい",
+        UI_09: "昨夜の記録",
+        UI_10: "寝落ち時刻:",
+        UI_11: "睡眠の質",
+        UI_12: "言語選択",
+        SHOP: "ショップ",
+        TITLE_DESC: "深夜の静寂へようこそ",
+        POINTS: "ポイント",
+        ELAPSED: "経過時間",
+        BGM_SELECT: "BGM選択",
+        BGM_VOLUME: "音量",
+        CLOSE: "閉じる",
+        EQUIPPED: "装備中",
+        SELECT: "選択",
+        PTS: "pt",
+        NOT_ENOUGH: "ポイントが足りません！",
+        SLEEP_DUR: "睡眠時間:"
+    },
+    en: {
+        UI_01: "Depart",
+        UI_02: "Settings & Shop",
+        UI_03: "Sleep Logs",
+        UI_04: "Choose Vehicle",
+        UI_05: "Cruising...",
+        UI_06: "Time Left",
+        UI_07: "+15s",
+        UI_08: "Sleep Well",
+        UI_09: "Last Night's Log",
+        UI_10: "Fell Asleep At:",
+        UI_11: "Sleep Quality",
+        UI_12: "Language",
+        SHOP: "Shop",
+        TITLE_DESC: "Welcome to the midnight silence.",
+        POINTS: "POINTS",
+        ELAPSED: "ELAPSED",
+        BGM_SELECT: "BGM SELECT",
+        BGM_VOLUME: "VOLUME",
+        CLOSE: "Close",
+        EQUIPPED: "Equipped",
+        SELECT: "Select",
+        PTS: "pts",
+        NOT_ENOUGH: "Not enough points!",
+        SLEEP_DUR: "Sleep Time:"
+    },
+    zh: {
+        UI_01: "启程",
+        UI_02: "设置 & 商店",
+        UI_03: "睡眠记录",
+        UI_04: "车辆选择",
+        UI_05: "巡航中...",
+        UI_06: "剩余时间",
+        UI_07: "+15秒",
+        UI_08: "晚安，好梦",
+        UI_09: "昨夜记录",
+        UI_10: "入睡时间:",
+        UI_11: "睡眠质量",
+        UI_12: "语言选择",
+        SHOP: "商店",
+        TITLE_DESC: "欢迎来到午夜的寂静",
+        POINTS: "点数",
+        ELAPSED: "已用时间",
+        BGM_SELECT: "背景音乐",
+        BGM_VOLUME: "音量",
+        CLOSE: "关闭",
+        EQUIPPED: "已装备",
+        SELECT: "选择",
+        PTS: "点",
+        NOT_ENOUGH: "点数不足！",
+        SLEEP_DUR: "睡眠时间:"
+    },
+    ko: {
+        UI_01: "출발",
+        UI_02: "설정 & 상점",
+        UI_03: "수면 기록",
+        UI_04: "차량 선택",
+        UI_05: "주행 중...",
+        UI_06: "남은 시간",
+        UI_07: "+15초",
+        UI_08: "잘 자요",
+        UI_09: "지난밤 기록",
+        UI_10: "잠든 시간:",
+        UI_11: "수면 품질",
+        UI_12: "언어 선택",
+        SHOP: "상점",
+        TITLE_DESC: "자정의 고요함에 오신 것을 환영합니다",
+        POINTS: "포인트",
+        ELAPSED: "경과 시간",
+        BGM_SELECT: "BGM 선택",
+        BGM_VOLUME: "음량",
+        CLOSE: "닫기",
+        EQUIPPED: "장착됨",
+        SELECT: "선택",
+        PTS: "pt",
+        NOT_ENOUGH: "포인트가 부족합니다!",
+        SLEEP_DUR: "수면 시간:"
+    },
+    es: {
+        UI_01: "Partir",
+        UI_02: "Ajustes y Tienda",
+        UI_03: "Registro de sueño",
+        UI_04: "Elegir vehículo",
+        UI_05: "En ruta...",
+        UI_06: "Tiempo restante",
+        UI_07: "+15 s",
+        UI_08: "Dulces sueños",
+        UI_09: "Registro de anoche",
+        UI_10: "Te dormiste a las:",
+        UI_11: "Calidad del sueño",
+        UI_12: "Idioma",
+        SHOP: "Tienda",
+        TITLE_DESC: "Bienvenido al silencio de la medianoche",
+        POINTS: "PUNTOS",
+        ELAPSED: "TRANSCURRIDO",
+        BGM_SELECT: "MÚSICA",
+        BGM_VOLUME: "VOLUMEN",
+        CLOSE: "Cerrar",
+        EQUIPPED: "Equipado",
+        SELECT: "Elegir",
+        PTS: "pts",
+        NOT_ENOUGH: "¡No hay suficientes puntos!",
+        SLEEP_DUR: "Tiempo de sueño:"
+    },
+    fr: {
+        UI_01: "Départ",
+        UI_02: "Paramètres et boutique",
+        UI_03: "Journal de sommeil",
+        UI_04: "Choix du véhicule",
+        UI_05: "En route...",
+        UI_06: "Temps restant",
+        UI_07: "+15 s",
+        UI_08: "Fais de beaux rêves",
+        UI_09: "Nuit dernière",
+        UI_10: "Endormi(e) à :",
+        UI_11: "Qualité du sommeil",
+        UI_12: "Langue",
+        SHOP: "Boutique",
+        TITLE_DESC: "Bienvenue dans le silence de minuit",
+        POINTS: "POINTS",
+        ELAPSED: "ÉCOULÉ",
+        BGM_SELECT: "MUSIQUE",
+        BGM_VOLUME: "VOLUME",
+        CLOSE: "Fermer",
+        EQUIPPED: "Équipé",
+        SELECT: "Choisir",
+        PTS: "pts",
+        NOT_ENOUGH: "Pas assez de points !",
+        SLEEP_DUR: "Temps de sommeil :"
+    }
+};
+
+let currentLang = localStorage.getItem('languid_lang') || 'ja';
+
+function t(key, defaultVal = '') {
+    return i18n[currentLang][key] || defaultVal;
+}
+
+function updateTexts() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(i18n[currentLang][key]) {
+            el.innerText = i18n[currentLang][key];
+        }
+    });
+    // Setting Modal title
+    if (!shopModal.classList.contains('hidden')) {
+        renderShop();
+    }
+}
+
+langSelect.value = currentLang;
+langSelect.addEventListener('change', (e) => {
+    currentLang = e.target.value;
+    localStorage.setItem('languid_lang', currentLang);
+    updateTexts();
+});
+
+// Update title screen total points initially
+updateTexts();
+
+// Shop config
+const shopConfig = [
+    { id: 'default', name: 'Cyan (Default)', cost: 0, colors: ['#0ea5e9', '#00ffea', '#0ea5e9'] },
+    { id: 'purple', name: 'Neon Purple', cost: 10, colors: ['#9333ea', '#d946ef', '#9333ea'] },
+    { id: 'green', name: 'Toxic Green', cost: 20, colors: ['#16a34a', '#4ade80', '#16a34a'] },
+    { id: 'red', name: 'Crimson Red', cost: 50, colors: ['#dc2626', '#f87171', '#dc2626'] },
+    { id: 'gold', name: 'Luxury Gold', cost: 100, colors: ['#ca8a04', '#fde047', '#ca8a04'] }
+];
 
 // Constants & State
 const BASE_SPEED = 2;
@@ -37,8 +247,13 @@ let state = {
     checkpointsCollected: 0,
     sleepStartTime: null,
     lastFrameTime: Date.now(),
-    totalPoints: parseInt(localStorage.getItem('languid_total_points') || '0', 10)
+    totalPoints: parseInt(localStorage.getItem('languid_total_points') || '0', 10),
+    unlockedColors: JSON.parse(localStorage.getItem('languid_unlocked_colors') || '["default"]'),
+    currentColor: localStorage.getItem('languid_current_color') || 'default',
+    currentBgm: localStorage.getItem('languid_current_bgm') || 'Midnight piano.mp3'
 };
+
+bgmSelect.value = state.currentBgm;
 
 // Update title screen total points initially
 totalPointsDisplay.innerText = state.totalPoints;
@@ -53,7 +268,7 @@ checkpointImg.src = 'assets/checkpoint.png';
 const cpSound = new Audio('assets/BGM/Bell(High).mp3');
 cpSound.volume = 0.6;
 
-const mainBgm = new Audio('assets/BGM/Midnight piano.mp3');
+const mainBgm = new Audio('assets/BGM/' + state.currentBgm);
 mainBgm.loop = true;
 mainBgm.volume = 0.6;
 
@@ -72,6 +287,109 @@ window.addEventListener('touchstart', startMainBgm, { once: true, passive: true 
 bgmVolumeSlider.addEventListener('input', (e) => {
     mainBgm.volume = e.target.value;
 });
+
+bgmSelect.addEventListener('change', (e) => {
+    state.currentBgm = e.target.value;
+    localStorage.setItem('languid_current_bgm', state.currentBgm);
+    mainBgm.src = 'assets/BGM/' + state.currentBgm;
+    if (bgmStarted) {
+        mainBgm.play();
+    }
+});
+
+settingsOpenBtn.addEventListener('click', () => {
+    settingsModal.classList.remove('hidden');
+});
+
+settingsCloseBtn.addEventListener('click', () => {
+    settingsModal.classList.add('hidden');
+});
+
+shopOpenBtn.addEventListener('click', () => {
+    renderShop();
+    shopModal.classList.remove('hidden');
+});
+
+shopCloseBtn.addEventListener('click', () => {
+    shopModal.classList.add('hidden');
+});
+
+langOpenBtn.addEventListener('click', () => {
+    langModal.classList.remove('hidden');
+});
+
+langCloseBtn.addEventListener('click', () => {
+    langModal.classList.add('hidden');
+});
+
+function renderShop() {
+    shopItemsContainer.innerHTML = '';
+    shopConfig.forEach(item => {
+        const isUnlocked = state.unlockedColors.includes(item.id);
+        const isSelected = state.currentColor === item.id;
+        
+        const div = document.createElement('div');
+        div.className = `shop-item ${isUnlocked ? 'unlocked' : ''} ${isSelected ? 'selected' : ''}`;
+        
+        const infoDiv = document.createElement('div');
+        infoDiv.style.display = 'flex';
+        infoDiv.style.alignItems = 'center';
+        
+        const preview = document.createElement('div');
+        preview.className = 'color-preview';
+        preview.style.background = `linear-gradient(to right, ${item.colors[0]}, ${item.colors[1]})`;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.style.color = '#fff';
+        nameSpan.style.fontSize = '14px';
+        nameSpan.innerText = item.name;
+        
+        infoDiv.appendChild(preview);
+        infoDiv.appendChild(nameSpan);
+        div.appendChild(infoDiv);
+        
+        const btn = document.createElement('button');
+        btn.className = 'shop-btn';
+        
+        if (isSelected) {
+            btn.innerText = 'Equipped';
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+        } else if (isUnlocked) {
+            btn.classList.add('select');
+            btn.innerText = 'Select';
+            btn.onclick = () => {
+                state.currentColor = item.id;
+                localStorage.setItem('languid_current_color', item.id);
+                renderShop();
+                render(); 
+            };
+        } else {
+            btn.classList.add('buy');
+            btn.innerText = `${item.cost} pts`;
+            btn.onclick = () => {
+                if (state.totalPoints >= item.cost) {
+                    state.totalPoints -= item.cost;
+                    totalPointsDisplay.innerText = state.totalPoints;
+                    localStorage.setItem('languid_total_points', state.totalPoints);
+                    
+                    state.unlockedColors.push(item.id);
+                    localStorage.setItem('languid_unlocked_colors', JSON.stringify(state.unlockedColors));
+                    
+                    state.currentColor = item.id;
+                    localStorage.setItem('languid_current_color', item.id);
+                    renderShop();
+                    render();
+                } else {
+                    alert('ポイントが足りません！');
+                }
+            };
+        }
+        
+        div.appendChild(btn);
+        shopItemsContainer.appendChild(div);
+    });
+}
 
 // Setup Canvas size
 function resize() {
@@ -225,8 +543,8 @@ function update() {
         const m = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
         const s = (totalSec % 60).toString().padStart(2, '0');
         
-        const timeStr = h > 0 ? `${h}時間${m}分${s}秒` : `${m}分${s}秒`;
-        document.getElementById('sleep-time-display').innerText = `寝落ち睡眠時間: ${timeStr}`;
+        const timeStr = h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
+        document.getElementById('sleep-time-display').innerText = `${t('SLEEP_DUR')} ${timeStr}`;
     }
 
     state.distanceTravelled += state.scrollSpeed;
@@ -274,7 +592,7 @@ function triggerGameOver() {
                 const finalPlaySec = Math.floor(state.elapsedTime / 1000);
                 const pm = Math.floor(finalPlaySec / 60).toString().padStart(2, '0');
                 const ps = (finalPlaySec % 60).toString().padStart(2, '0');
-                document.getElementById('play-time-display').innerText = `寝落ちまでの時間: ${pm}分${ps}秒`;
+                document.getElementById('play-time-display').innerText = `${t('UI_10')} ${pm}:${ps}`;
 
                 // Start sleep timer
                 state.sleepStartTime = Date.now();
@@ -350,15 +668,17 @@ function render() {
     const carW = 36;
     const carH = 64;
 
+    const activeColorConf = shopConfig.find(c => c.id === state.currentColor) || shopConfig[0];
+
     // Outer Glow
     ctx.shadowBlur = 20;
-    ctx.shadowColor = 'rgba(0, 255, 234, 0.8)';
+    ctx.shadowColor = activeColorConf.colors[1];
 
     // Body
     const bodyGrad = ctx.createLinearGradient(state.playerX - carW / 2, playerY, state.playerX + carW / 2, playerY);
-    bodyGrad.addColorStop(0, '#0ea5e9');
-    bodyGrad.addColorStop(0.5, '#00ffea');
-    bodyGrad.addColorStop(1, '#0ea5e9');
+    bodyGrad.addColorStop(0, activeColorConf.colors[0]);
+    bodyGrad.addColorStop(0.5, activeColorConf.colors[1]);
+    bodyGrad.addColorStop(1, activeColorConf.colors[2]);
     ctx.fillStyle = bodyGrad;
 
     ctx.beginPath();
