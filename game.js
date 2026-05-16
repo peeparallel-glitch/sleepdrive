@@ -480,48 +480,58 @@ bgmSelect.addEventListener('change', (e) => {
     }
 });
 
-settingsOpenBtn.addEventListener('click', () => {
+settingsOpenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     settingsModal.classList.remove('hidden');
 });
 
-settingsCloseBtn.addEventListener('click', () => {
+settingsCloseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     settingsModal.classList.add('hidden');
 });
 
-shopOpenBtn.addEventListener('click', () => {
+shopOpenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     renderShop();
     shopModal.classList.remove('hidden');
 });
 
-shopCloseBtn.addEventListener('click', () => {
+shopCloseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     shopModal.classList.add('hidden');
 });
 
-langOpenBtn.addEventListener('click', () => {
+langOpenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     langModal.classList.remove('hidden');
 });
 
-langCloseBtn.addEventListener('click', () => {
+langCloseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     langModal.classList.add('hidden');
 });
 
 // --- Sleep System Logic ---
-sleepLogOpenBtn.addEventListener('click', () => {
+sleepLogOpenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     renderSleepHistory();
     sleepHistoryModal.classList.remove('hidden');
 });
 
-sleepHistoryCloseBtn.addEventListener('click', () => {
+sleepHistoryCloseBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     sleepHistoryModal.classList.add('hidden');
 });
 
-sleepEvalOpenBtn.addEventListener('click', () => {
+sleepEvalOpenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     sleepHistoryModal.classList.add('hidden');
     initSleepEval();
     sleepEvalModal.classList.remove('hidden');
 });
 
-sleepEvalSkipBtn.addEventListener('click', () => {
+sleepEvalSkipBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     sleepEvalModal.classList.add('hidden');
 });
 
@@ -790,6 +800,15 @@ startBtn.addEventListener('click', (e) => {
 const panelIds = ['title-screen', 'shop-modal', 'settings-modal', 'lang-modal', 'start-hint'];
 document.getElementById('game-container').addEventListener('click', (e) => {
     if (!state.isTitleScreen) return;
+    
+    // Prevent starting if any modal is currently open
+    const modals = ['shop-modal', 'settings-modal', 'lang-modal', 'sleep-history-modal', 'sleep-eval-modal'];
+    const isModalOpen = modals.some(id => {
+        const el = document.getElementById(id);
+        return el && !el.classList.contains('hidden');
+    });
+    if (isModalOpen) return;
+
     // Check if click is inside any panel
     const isInsidePanel = panelIds.some(id => {
         const el = document.getElementById(id);
@@ -800,6 +819,15 @@ document.getElementById('game-container').addEventListener('click', (e) => {
 
 document.getElementById('game-container').addEventListener('touchstart', (e) => {
     if (!state.isTitleScreen) return;
+    
+    // Prevent starting if any modal is currently open
+    const modals = ['shop-modal', 'settings-modal', 'lang-modal', 'sleep-history-modal', 'sleep-eval-modal'];
+    const isModalOpen = modals.some(id => {
+        const el = document.getElementById(id);
+        return el && !el.classList.contains('hidden');
+    });
+    if (isModalOpen) return;
+
     const touch = e.touches[0];
     const isInsidePanel = panelIds.some(id => {
         const el = document.getElementById(id);
