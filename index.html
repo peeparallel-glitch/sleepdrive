@@ -34,7 +34,10 @@
                     <span id="total-time">00:00</span>
                 </div>
             </div>
-
+            <!-- Real-time clock bar -->
+            <div style="text-align: center; margin-top: 10px; pointer-events: none;">
+                <span id="realtime-clock" style="font-size: 13px; color: rgba(148,163,184,0.7); letter-spacing: 0.12em; font-weight: 300;">00:00:00</span>
+            </div>
         </div>
 
         <div id="fade-overlay"></div>
@@ -43,6 +46,7 @@
             <h1 data-i18n="UI_09">Last Night's Log</h1>
             <p data-i18n="UI_08">Sleep Well.</p>
             <p id="play-time-display" style="font-size: 1em; color: #e0e6ed; font-weight: 400; margin-bottom: 8px;"></p>
+            <p id="sleep-real-time-display" style="font-size: 1.5em; color: #fbbf24; font-weight: 600; margin-bottom: 4px; text-shadow: 0 0 15px rgba(251,191,36,0.5); letter-spacing: 0.05em;"></p>
             <p id="sleep-time-display" style="font-size: 1.25em; color: #00ffea; font-weight: 500; margin-bottom: 24px; text-shadow: 0 0 10px rgba(0, 255, 234, 0.5);"></p>
             <button id="restart-btn" data-i18n="UI_01">Drive Again</button>
         </div>
@@ -51,31 +55,51 @@
             <h1>Languid Drive</h1>
             <p data-i18n="TITLE_DESC">深夜の静寂へようこそ</p>
             <div style="margin-bottom: 24px; background: rgba(0,0,0,0.3); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                <span data-i18n="POINTS" style="font-size: 12px; color: #94a3b8; letter-spacing: 0.1em; display: block; margin-bottom: 4px;">TOTAL POINTS</span>
+                <span style="font-size: 12px; color: #94a3b8; letter-spacing: 0.1em; display: block; margin-bottom: 4px;">TOTAL POINTS</span>
                 <span id="total-points-display" style="font-size: 32px; color: #fbbf24; font-weight: 600; display: block; text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);">0</span>
             </div>
             <div style="margin-bottom: 24px;">
-                <span data-i18n="BGM_VOLUME" style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 8px; letter-spacing: 0.05em;">BGM VOLUME</span>
+                <span style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 8px; letter-spacing: 0.05em;">BGM VOLUME</span>
                 <input type="range" id="bgm-volume-slider" min="0" max="1" step="0.05" value="0.6" style="width: 100%; accent-color: #0ea5e9;">
             </div>
-            <div class="menu-buttons" style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
-                <button id="start-btn" data-i18n="UI_01">Drive Starts</button>
-                <button id="shop-open-btn" data-i18n="SHOP" style="background: transparent; color: #00ffea; border: 1px solid #00ffea; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">Shop</button>
-                <button id="settings-open-btn" data-i18n="UI_02" style="background: transparent; color: #94a3b8; border: 1px solid #334155; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">Settings</button>
-                <button id="lang-open-btn" data-i18n="UI_12" style="background: transparent; color: #94a3b8; border: 1px solid #334155; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">Language</button>
+            <div class="menu-buttons" style="display: flex; flex-direction: column; gap: 12px;">
+                <button id="shop-open-btn" style="background: transparent; color: #00ffea; border: 1px solid #00ffea; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">Shop</button>
+                <button id="settings-open-btn" style="background: transparent; color: #00ffea; border: 1px solid #00ffea; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">Settings</button>
+                <button id="lang-open-btn" style="background: transparent; color: #00ffea; border: 1px solid #00ffea; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">Language</button>
+                <button id="sleep-log-open-btn" style="background: transparent; color: #a78bfa; border: 1px solid #a78bfa; font-size: 14px; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: 0.2s;">&#x1F634; Sleep Log</button>
             </div>
+        </div>
+
+        <!-- Start hint below title, above car -->
+        <div id="start-hint">
+            <button id="start-btn">Depart</button>
+            <p id="start-tap-hint">— or tap anywhere to start —</p>
         </div>
 
         <!-- Shop Modal -->
         <div id="shop-modal" class="hidden">
             <h2 data-i18n="SHOP" style="font-size: 20px; margin-bottom: 16px; color: #fff;">Shop</h2>
-            <div style="margin-bottom: 24px; text-align: left;">
-                <label data-i18n="UI_04" style="font-size: 12px; color: #94a3b8; display: block; margin-bottom: 8px;">Choose Vehicle</label>
-                <div id="shop-items" style="max-height: 200px; overflow-y: auto; padding-right: 8px;">
-                    <!-- Items generated by JS -->
+
+            <!-- Vehicle section -->
+            <div style="margin-bottom: 16px; text-align: left; background: rgba(0,255,234,0.04); border: 1px solid rgba(0,255,234,0.15); border-radius: 16px; padding: 14px;">
+                <p style="font-size: 11px; color: #00ffea; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 10px;">&#x1F697; <span data-i18n="SHOP_VEHICLE">Vehicle</span></p>
+                <div id="shop-items-vehicle" style="max-height: 180px; overflow-y: auto; padding-right: 4px;">
+                    <!-- Generated by JS -->
                 </div>
             </div>
-            <button id="shop-close-btn" data-i18n="CLOSE" style="background: var(--text-primary); color: #000; border: none; padding: 12px 32px; border-radius: 100px; font-weight: 600; cursor: pointer;">Close</button>
+
+            <!-- Color section -->
+            <div style="margin-bottom: 20px; text-align: left; background: rgba(0,255,234,0.04); border: 1px solid rgba(0,255,234,0.15); border-radius: 16px; padding: 14px;">
+                <p style="font-size: 11px; color: #00ffea; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 10px;">&#x1F3A8; <span data-i18n="SHOP_COLOR">Color</span></p>
+                <div id="shop-items-color" style="max-height: 180px; overflow-y: auto; padding-right: 4px;">
+                    <!-- Generated by JS -->
+                </div>
+            <div style="position: relative; display: flex; align-items: center; justify-content: space-between;">
+                <button id="shop-close-btn" data-i18n="CLOSE" style="background: var(--text-primary); color: #000; border: none; padding: 12px 32px; border-radius: 100px; font-weight: 600; cursor: pointer;">Close</button>
+                <div style="width: 80px; height: 80px; background: rgba(15,23,42,0.6); border-radius: 16px; border: 1px solid rgba(0,255,234,0.3); box-shadow: 0 0 15px rgba(0,255,234,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <canvas id="shop-preview-canvas" width="80" height="80"></canvas>
+                </div>
+            </div>
         </div>
 
         <!-- Settings Modal -->
@@ -106,6 +130,41 @@
                 </select>
             </div>
             <button id="lang-close-btn" data-i18n="CLOSE" style="background: var(--text-primary); color: #000; border: none; padding: 12px 32px; border-radius: 100px; font-weight: 600; cursor: pointer;">Close</button>
+        </div>
+
+        <!-- Sleep Evaluation Modal -->
+        <div id="sleep-eval-modal" class="hidden">
+            <div style="text-align:center;">
+                <div style="font-size:28px;margin-bottom:4px;">&#x1F634;</div>
+                <h2 style="font-size:18px;font-weight:400;color:#e2e8f0;margin-bottom:4px;">Sleep Quality Check</h2>
+                <p style="font-size:12px;color:#64748b;margin-bottom:20px;">&#x266A; tap your feeling</p>
+            </div>
+            <div class="sleep-q-block">
+                <p class="sleep-q-label">&#x1F319; 寝つきはどうでしたか？</p>
+                <div class="sleep-rating" data-key="fallAsleep"></div>
+            </div>
+            <div class="sleep-q-block">
+                <p class="sleep-q-label">&#x1F4A4; 途中で目が覚めなかった？</p>
+                <div class="sleep-rating" data-key="stayAsleep"></div>
+            </div>
+            <div class="sleep-q-block">
+                <p class="sleep-q-label">&#x2600;&#xFE0F; 目覚めはすっきりしてた？</p>
+                <div class="sleep-rating" data-key="freshness"></div>
+            </div>
+            <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;">
+                <button id="sleep-eval-submit" style="background:#7c3aed;color:#fff;border:none;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;">記録する</button>
+                <button id="sleep-eval-skip" style="background:transparent;color:#475569;border:1px solid #334155;padding:12px 20px;border-radius:100px;font-size:13px;cursor:pointer;">あとで</button>
+            </div>
+        </div>
+
+        <!-- Sleep History Modal -->
+        <div id="sleep-history-modal" class="hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h2 style="font-size:18px;font-weight:400;color:#e2e8f0;margin:0;">&#x1F634; Sleep Log</h2>
+                <button id="sleep-eval-open-btn" style="background:#7c3aed;color:#fff;border:none;padding:6px 16px;border-radius:100px;font-size:12px;cursor:pointer;">+ 今日の記録</button>
+            </div>
+            <div id="sleep-history-list" style="max-height:280px;overflow-y:auto;"></div>
+            <button id="sleep-history-close-btn" style="margin-top:16px;background:var(--text-primary);color:#000;border:none;padding:12px 32px;border-radius:100px;font-weight:600;cursor:pointer;">Close</button>
         </div>
     </div>
 
